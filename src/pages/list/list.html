@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{subject.name}}</ion-title>
+    <ion-buttons right (click)="clear()">
+      <button ion-button>
+        <ion-label>清除记录</ion-label>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content no-padding id="listtoggle">
+  <page-null *ngIf="test!=null&&test.list.length==0"></page-null>
+  <div class="list" *ngIf="test!=null">
+    <h1 *ngFor="let tmp of test.list">
+      <div class="cb" *ngIf="tmp.sub.length>0"></div>
+      <h5 *ngIf="tmp.sub.length==0"></h5>
+      <div class="tj">
+        <p>{{tmp.tit}}</p>
+        <div class="jdt"> 
+          <div class="ts">{{donef(tmp.beg,tmp.all)}}/{{tmp.all}}</div>
+          <div class="have" [style.width.%]="(done*100)/tmp.all"></div>
+        </div>
+      </div>
+      <button (click)="choose(tmp.beg,tmp.all,tmp.tit,tmp.tryOut)"></button>
+      <h2 *ngFor="let tmp of tmp.sub">
+        <div class="cb" *ngIf="tmp.sub.length>0"></div>
+        <h5 *ngIf="tmp.sub.length==0"></h5>
+        <div class="tj">
+          <p>{{tmp.tit}}</p>
+          <div class="jdt">
+            <div class="ts">{{donef(tmp.beg,tmp.all)}}/{{tmp.all}}</div>
+            <div class="have" [style.width.%]="(done*100)/tmp.all"></div>
+          </div>
+        </div>
+        <button (click)="choose(tmp.beg,tmp.all,tmp.tit,tmp.tryOut)"></button>
+        <h3 *ngFor="let tmp of tmp.sub">
+          <h4></h4>
+          <div class="tj">
+            <p>{{tmp.tit}}</p>
+            <div class="jdt">
+              <div class="ts">{{donef(tmp.beg,tmp.all)}}/{{tmp.all}}</div>
+              <div class="have" [style.width.%]="(done*100)/tmp.all"></div>
+            </div>
+          </div>
+          <button (click)="choose(tmp.beg,tmp.all,tmp.tit,tmp.tryOut)"></button>
+        </h3>
+      </h2>
+      <div class="hcb"></div>
+    </h1>
+  </div>
+</ion-content>
