@@ -45,7 +45,6 @@ export class VideoPage {
     this.first = true;
     this.ct = -1;
     this.ctf = true;
-    //this.url=this.video!==undefined?this.video.videoUrl:null;
     this.fileTransfer.onProgress((event) => {
       $(".video-jdt").children("div").css("width", event.loaded * 100 / event.total + "%").html("<p>" + (event.loaded * 100 / event.total).toFixed(0) + "%</p>");
     });
@@ -53,7 +52,7 @@ export class VideoPage {
 
   isOk(video) {
     //课程的权限
-    if (video.tryOut || (this.subject.videoClass!==undefined&&this.contains(this.subject.videoClass, video.authId) && this.subject.time >= new Date().getTime())) {
+    if (video.tryOut || (this.subject.videoClass !== undefined && this.contains(this.subject.videoClass, video.authId) && this.subject.time >= new Date().getTime())) {
       return true;
     } else {
       return false;
@@ -82,8 +81,12 @@ export class VideoPage {
     let down = 0;
     for (let x of this.downqueue) {
       if (id == x.id) {
-        if (cot == 0) down = 2;
-        else down = 3;
+        if (cot == 0) {
+          down = 2;
+        }
+        else {
+          down = 3;
+        }
         break;
       }
       cot++;
@@ -121,22 +124,22 @@ export class VideoPage {
   }
 
   getJd(event) {
-      this.video.time = event.target.duration;
-      this.video.done = event.target.currentTime;
+    this.video.time = event.target.duration;
+    this.video.done = event.target.currentTime;
   }
 
   /*loadedmetadata(event) {
-    if (this.ctf) {
-      let v = $('video')[0];
-      if (this.first) { //第一次载入
-        v.currentTime = this.video.done;
-      } else if (this.ct > 0) {//第二次载入
-        v.currentTime = this.ct;
-      }
-      v.play();
-      this.ctf = false;
-    }
-  }*/
+   if (this.ctf) {
+   let v = $('video')[0];
+   if (this.first) { //第一次载入
+   v.currentTime = this.video.done;
+   } else if (this.ct > 0) {//第二次载入
+   v.currentTime = this.ct;
+   }
+   v.play();
+   this.ctf = false;
+   }
+   }*/
 
   canPlay(event) {
     if (!this.first) {
@@ -153,12 +156,12 @@ export class VideoPage {
     alert.present();
   }
 
-  videoClick(event){
+  videoClick(event) {
     if (event.target.paused) {
       event.target.play();
-     } else if (event.target.played) {
+    } else if (event.target.played) {
       event.target.pause();
-     }
+    }
   }
 
   ionViewDidEnter() {
@@ -186,7 +189,7 @@ export class VideoPage {
         }
       }
       this.video = this.videos[this.si].list[this.sj];
-      if(this.video!==undefined){
+      if (this.video !== undefined) {
         this.title = this.video.title;
         if (this.isOk(this.video)) {
           if (this.getDown(this.video.id) == 1) {
@@ -245,8 +248,6 @@ export class VideoPage {
   }
 
   setUrl(i, j) {
-    console.log(this.subject);
-    console.log(this.videos);
     let v = $("video")[0];
     if ((this.si != i || this.sj != j) || this.first) {
       this.first = false;
@@ -256,6 +257,7 @@ export class VideoPage {
       this.title = this.video.title;
       if (this.getDown(this.video.id) == 1) {
         this.url = this.file.dataDirectory + this.video.id + '.mp4';
+        //this.log(this.url);
       }
       else {
         this.url = this.video.videoUrl;
@@ -273,6 +275,7 @@ export class VideoPage {
   }
 
   download() {
+    console.log(this.downqueue.length);
     if (this.downqueue.length > 0) {
       let v = this.downqueue[0];
       this.fileTransfer.download(v.videoUrl, this.file.dataDirectory + v.id + '.mp4').then((entry) => {
@@ -302,12 +305,15 @@ export class VideoPage {
   }
 
   setOpera(i, j) {
+    console.log(i + ":" + j);
     let v = this.videos[i].list[j];
     let down = this.getDown(v.id);
-    if (down == 0) {
-      //v.down=3;
+    console.log("down:" + down);
+    if (down == 0) { //未下载 开始下载
       this.downqueue.push(v);
-      if (this.downqueue.length == 1) this.download();
+      if (this.downqueue.length == 1) {
+        this.download();
+      }
     }
     else if (down == 1) {
       this.file.removeFile(this.file.dataDirectory, v.id + '.mp4');
@@ -322,7 +328,6 @@ export class VideoPage {
       this.httpstorage.setStorage("vd", this.vd);
     }
     else if (down == 2) {
-      //v.down=0;
       this.fileTransfer.abort();
     }
     else {
@@ -345,4 +350,15 @@ export class VideoPage {
     $(".video-title").eq(i).children(".cb").toggleClass("cbx");
     $(".video-title").eq(i).nextAll().toggle();
   }
+
+  log(msg){
+    let alert = this.alertCtrl.create({
+      title: '系统通知',
+      subTitle: msg,
+      buttons: ['好'],
+    });
+    alert.present();
+  }
+
+
 }

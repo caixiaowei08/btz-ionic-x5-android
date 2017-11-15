@@ -11,8 +11,11 @@ export class PlayPage {
   constructor(public viewCtrl: ViewController ,public navCtrl: NavController,public navParams: NavParams) {
     this.url=this.navParams.get("url");
     this.title=this.navParams.get("title");
+
   }
   dismiss(){
     this.viewCtrl.dismiss();
   }
+
+
 }
