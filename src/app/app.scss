@@ -14,9 +14,9 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-::-webkit-scrollbar { 
-    display: none; 
-} 
+::-webkit-scrollbar {
+    display: none;
+}
 //ion-app, ion-nav, ion-tab, ion-tabs, .app-root, .ion-page{
 ion-tabs, .ion-page{
     contain: none !important;
@@ -55,6 +55,7 @@ ion-content{
     pointer-events: none;
     display: none;
 }
+
 .darkmode{
     filter: brightness(70%);
     //filter: grayscale(50%);

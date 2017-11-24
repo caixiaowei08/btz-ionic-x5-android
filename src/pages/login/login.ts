@@ -32,7 +32,10 @@ export class LoginPage {
 
   login() {
     var this_ = this;
-    this.httpstorage.getHttp('/app/loginController.do?login&userId=' + this.account + '&userPwd=' + this.password, (data) => {
+    this_.httpstorage.postHttp('/app/loginController.do?login', JSON.stringify({
+      userId: this_.account,
+      userPwd: this_.password
+    }), (data) => {
       if (data != null) {
         if (data.returnCode) {
           let user: any = {
@@ -70,6 +73,7 @@ export class LoginPage {
       }
     });
   }
+
 
   free() {
     var this_ = this;
@@ -125,21 +129,40 @@ export class LoginPage {
     }
   }
 
+  //验证码修改码 修改密码
   pwfok() {
-    if (this.pwfyzm != "" && this.pwfpwd != "")
-      this.httpstorage.getHttp("/app/userController.do?doUpdatePwdByEmailCode&userId=" + this.pwfuser + "&newPwd=" + this.pwfpwd + "&emailCode=" + this.pwfyzm, (data) => {
-        let alert = this.alertCtrl.create({
+    var this_ = this;
+    if (this_.pwfyzm != "" && this_.pwfpwd != "") {
+      this_.httpstorage.postHttp('/app/userController.do?doUpdatePwdByEmailCode', JSON.stringify({
+        userId: this_.pwfuser,
+        newPwd: this_.pwfpwd,
+        emailCode: this_.pwfyzm
+      }), (data) => {
+        let alert = this_.alertCtrl.create({
           title: '系统通知',
           subTitle: data.msg,
           buttons: ['好']
         });
         alert.present();
         if (data.returnCode) this.clear();
-      })
+      });
+    } else {
+      let alert = this_.alertCtrl.create({
+        title: '系统通知',
+        subTitle: "请填写验证码和新密码！",
+        buttons: ['好']
+      });
+      alert.present();
+    }
   }
 
   pwmok() {
-    this.httpstorage.getHttp("/app/userController.do?doUpdatePwdByOldPwd&userId=" + this.pwmuser + "&newPwd=" + this.pwmnpw + "&oldPwd=" + this.pwmopw, (data) => {
+    var this_ = this;
+    this_.httpstorage.postHttp('/app/userController.do?doUpdatePwdByOldPwd', JSON.stringify({
+      userId: this_.pwfuser,
+      newPwd: this_.pwmnpw,
+      oldPwd: this_.pwmopw
+    }), (data) => {
       let alert = this.alertCtrl.create({
         title: '系统通知',
         subTitle: data.msg,
@@ -149,7 +172,8 @@ export class LoginPage {
       if (data.returnCode) {
         this.clear();
       }
-    })
+    });
+
   }
 
   forget() {
