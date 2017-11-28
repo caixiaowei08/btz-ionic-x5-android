@@ -32,7 +32,7 @@ export class LoginPage {
 
   login() {
     var this_ = this;
-    this_.httpstorage.postHttp('/app/loginController.do?login', JSON.stringify({
+    this_.httpstorage.postHttp('/app/loginController.do?loginPost', JSON.stringify({
       userId: this_.account,
       userPwd: this_.password
     }), (data) => {
@@ -133,7 +133,7 @@ export class LoginPage {
   pwfok() {
     var this_ = this;
     if (this_.pwfyzm != "" && this_.pwfpwd != "") {
-      this_.httpstorage.postHttp('/app/userController.do?doUpdatePwdByEmailCode', JSON.stringify({
+      this_.httpstorage.postHttp('/app/userController.do?doUpdatePwdByEmailCodePost', JSON.stringify({
         userId: this_.pwfuser,
         newPwd: this_.pwfpwd,
         emailCode: this_.pwfyzm
@@ -158,8 +158,8 @@ export class LoginPage {
 
   pwmok() {
     var this_ = this;
-    this_.httpstorage.postHttp('/app/userController.do?doUpdatePwdByOldPwd', JSON.stringify({
-      userId: this_.pwfuser,
+    this_.httpstorage.postHttp('/app/userController.do?doUpdatePwdByOldPwdPost', JSON.stringify({
+      userId: this_.pwmuser,
       newPwd: this_.pwmnpw,
       oldPwd: this_.pwmopw
     }), (data) => {
